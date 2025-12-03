@@ -1,0 +1,13 @@
+backend-
+    activity
+        time
+        place
+        
+frontend-
+    styles
+        modals
+        map icons
+
+    modal for activity info / edit
+
+readme.md

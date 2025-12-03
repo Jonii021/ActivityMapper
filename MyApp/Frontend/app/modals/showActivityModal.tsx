@@ -4,23 +4,11 @@ import { Activity } from '../../types';
 
 type Props = {
   visible: boolean;
-  activity?: Partial<Activity>;
-  onSave: (activity: Partial<Activity>) => void;
+  activity: Activity;
   onClose: () => void;
 };
 
-export default function AddActivityModal({ visible, activity, onSave, onClose }: Props) {
-  const [title, setTitle] = useState(activity?.title || '');
-  const [description, setDescription] = useState(activity?.description || '');
-
-  useEffect(() => {
-    setTitle(activity?.title || '');
-    setDescription(activity?.description || '');
-  }, [activity]);
-
-  const handleSave = () => {
-    onSave({ ...activity, title, description });
-  };
+export default function ShowActivityModal({ visible, activity, onClose }: Props) {
 
   return (
     <Modal
@@ -28,23 +16,20 @@ export default function AddActivityModal({ visible, activity, onSave, onClose }:
       transparent={true}
       visible={visible}
       onRequestClose={onClose}
-    >
-            <TouchableWithoutFeedback onPress={onClose}>
+    >      
+    <TouchableWithoutFeedback onPress={onClose}>
 
       <View style={styles.modalContainer}>
               <TouchableWithoutFeedback>
 
         <View style={styles.modalContent}>
-          <Text>Title:</Text>
-          <TextInput style={styles.input} value={title} onChangeText={setTitle} />
-          <Text>Description:</Text>
-          <TextInput style={styles.input} value={description} onChangeText={setDescription} />
-          <Button title="Save" onPress={handleSave} />
-          <Button title="Cancel" onPress={onClose} />
+          <Text>Title: {activity?.title}</Text>
+          <Text>Description: {activity?.description}</Text>
         </View>
                 </TouchableWithoutFeedback>
       </View>
             </TouchableWithoutFeedback>
+
     </Modal>
   );
 }

@@ -2,6 +2,9 @@ backend-
     activity
         time
         place
+        map icons
+        users
+            join
         
 frontend-
     styles

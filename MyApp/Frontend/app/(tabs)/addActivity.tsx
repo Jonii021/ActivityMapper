@@ -4,13 +4,16 @@ import { Text, View } from '@/components/Themed';
 import React, { useEffect, useState } from 'react';
 import { getActivities, createActivity } from '../../api';
 import { Activity } from '../../types';
-import ActivityModal from '../modals/addActivityModal';
+import AddActivityModal from '../modals/addActivityModal';
+import ShowActivityModal from '../modals/showActivityModal';
 
 
-export default function TabOneScreen() {
+export default function AddActivity() {
   const [activities, setActivities] = useState<Activity[]>([]);
-  const [modalVisible, setModalVisible] = useState(false);
+  const [addModalVisible, setAddModalVisible] = useState(false);
+  const [showModalVisible, setShowModalVisible] = useState(false);
   const [newActivity, setNewActivity] = useState<Partial<Activity>>({});
+  const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   const loadActivities = async () => {
@@ -35,13 +38,13 @@ export default function TabOneScreen() {
       latitude: e.nativeEvent.coordinate.latitude,
       longitude: e.nativeEvent.coordinate.longitude,
     });
-    setModalVisible(true);
+    setAddModalVisible(true);
   };
 
   const handleSave = async (activity: Partial<Activity>) => {
     if (activity.title && activity.description && activity.latitude && activity.longitude) {
       await createActivity(activity as Activity);
-      setModalVisible(false);
+      setAddModalVisible(false);
       setNewActivity({});
       loadActivities();
     }
@@ -66,18 +69,27 @@ useEffect(() => {
         {activities.map((activity) => (
           <Marker
             key={activity.id}
-            coordinate={{ latitude: activity.latitude, longitude: activity.longitude }}
-            title={activity.title}
-            description={activity.description}
-          />
+            onPress={() => {
+              setShowModalVisible(true);
+              setSelectedActivity(activity);
+            } } coordinate={{
+              latitude: activity.latitude,
+              longitude: activity.longitude
+            }}          />
         ))}
-      </MapView>
 
-      <ActivityModal
-        visible={modalVisible}
+      </MapView>
+      
+          <ShowActivityModal
+            visible={showModalVisible}
+            activity={selectedActivity as Activity}
+            onClose={() => setShowModalVisible(false)}
+          />
+      <AddActivityModal
+        visible={addModalVisible}
         activity={newActivity}
         onSave={handleSave}
-        onClose={() => setModalVisible(false)}
+        onClose={() => setAddModalVisible(false)}
       />
     </View>
   );

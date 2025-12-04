@@ -2,7 +2,7 @@ backend-
     activity
         time
         place
-        map icons
+        map icons/
         users
             join
         

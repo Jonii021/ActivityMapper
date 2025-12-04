@@ -1,3 +1,5 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+
 // Activity type
 export interface Activity {
   id?: number;
@@ -6,3 +8,10 @@ export interface Activity {
   latitude: number;
   longitude: number;
 }
+
+
+export type RootStackParamList = {
+  Setup: undefined;
+  Tabs: undefined; 
+  Modal: undefined;
+};

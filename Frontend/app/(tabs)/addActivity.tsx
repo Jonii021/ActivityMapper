@@ -6,7 +6,15 @@ import { getActivities, createActivity } from '../../api';
 import { Activity } from '../../types';
 import AddActivityModal from '../modals/addActivityModal';
 import ShowActivityModal from '../modals/showActivityModal';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
+
+function ActivityIcon(props: {
+  name: React.ComponentProps<typeof FontAwesome>['name'];
+  color: string;
+}) {
+  return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
+}
 
 export default function AddActivity() {
   const [activities, setActivities] = useState<Activity[]>([]);
@@ -49,10 +57,10 @@ export default function AddActivity() {
       loadActivities();
     }
   };
-  
-useEffect(() => {
-  loadActivities();
-}, []);
+
+  useEffect(() => {
+    loadActivities();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -72,19 +80,32 @@ useEffect(() => {
             onPress={() => {
               setShowModalVisible(true);
               setSelectedActivity(activity);
-            } } coordinate={{
+            }} coordinate={{
               latitude: activity.latitude,
               longitude: activity.longitude
-            }}          />
+            }}   >
+            <View
+              style={{
+                backgroundColor: '#ffffff',
+
+              }}
+
+            >
+              <ActivityIcon
+                name="trophy"
+                color="orange"
+              />
+            </View>
+          </Marker>
         ))}
 
       </MapView>
-      
-          <ShowActivityModal
-            visible={showModalVisible}
-            activity={selectedActivity as Activity}
-            onClose={() => setShowModalVisible(false)}
-          />
+
+      <ShowActivityModal
+        visible={showModalVisible}
+        activity={selectedActivity as Activity}
+        onClose={() => setShowModalVisible(false)}
+      />
       <AddActivityModal
         visible={addModalVisible}
         activity={newActivity}

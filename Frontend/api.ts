@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Activity } from './types';
+import { Activity } from './constants/types';
 // Replace with your backend URL (on Android emulator, use your machine IP)
 const API_URL = 'http://192.168.0.30:5000/';
 

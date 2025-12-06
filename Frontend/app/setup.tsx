@@ -2,7 +2,7 @@ import { setName } from '@/components/identity';
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../types';
+import { RootStackParamList } from '../constants/types';
 import { useRouter } from 'expo-router';
 
 

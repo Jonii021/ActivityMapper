@@ -3,7 +3,7 @@ import MapView, { MapPressEvent, Marker } from 'react-native-maps';
 import { Text, View } from '@/components/Themed';
 import React, { useEffect, useState } from 'react';
 import { getActivities, createActivity } from '../../api';
-import { Activity } from '../../types';
+import { Activity } from '../../constants/types';
 import AddActivityModal from '../modals/addActivityModal';
 import ShowActivityModal from '../modals/showActivityModal';
 import FontAwesome from '@expo/vector-icons/FontAwesome';

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, View, TextInput, Button, StyleSheet, Text, TouchableWithoutFeedback } from 'react-native';
-import { Activity } from '../../types';
+import { Activity } from '../../constants/types';
 
 type Props = {
   visible: boolean;
@@ -16,19 +16,24 @@ export default function ShowActivityModal({ visible, activity, onClose }: Props)
       transparent={true}
       visible={visible}
       onRequestClose={onClose}
-    >      
-    <TouchableWithoutFeedback onPress={onClose}>
+    >
+      <TouchableWithoutFeedback onPress={onClose}>
 
-      <View style={styles.modalContainer}>
-              <TouchableWithoutFeedback>
+        <View style={styles.modalContainer}>
+          <TouchableWithoutFeedback>
 
-        <View style={styles.modalContent}>
-          <Text>Title: {activity?.title}</Text>
-          <Text>Description: {activity?.description}</Text>
+            <View style={styles.modalContent}>
+              <Text>Category: {activity?.category}</Text>
+              <Text>Title: {activity?.title}</Text>
+              <Text>Description: {activity?.description}</Text>
+              <Text>  Date: {activity?.date ? (
+                new Date(activity.date).toLocaleString())
+                : ''
+              }</Text>
+            </View>
+          </TouchableWithoutFeedback>
         </View>
-                </TouchableWithoutFeedback>
-      </View>
-            </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>
 
     </Modal>
   );

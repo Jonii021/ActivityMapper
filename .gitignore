@@ -1,1 +1,34 @@
 node_modules/
+
+# Build output
+bin/
+obj/
+
+# User–specific files
+*.user
+*.rsuser
+*.suo
+*.userprefs
+*.csproj.user
+*.vscode/
+
+# IDE folders
+.vs/
+
+# Logs / temp
+*.log
+*.tlog
+*.cache
+*.tmp
+
+# NuGet
+*.nupkg
+.nuget/
+packages/
+
+# Generated files
+project.lock.json
+project.fragment.lock.json
+
+# ASP.NET Core runtime artifacts
+wwwroot/lib/

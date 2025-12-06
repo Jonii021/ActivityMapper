@@ -36,6 +36,9 @@ public static class ActivityEndpoints
             activity.Description = updated.Description;
             activity.Latitude = updated.Latitude;
             activity.Longitude = updated.Longitude;
+            activity.StartDate = updated.StartDate;
+            activity.EndDate = updated.EndDate;
+            activity.Category = updated.Category;
 
             await db.SaveChangesAsync();
             return Results.Ok(activity);

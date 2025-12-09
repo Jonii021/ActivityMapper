@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Modal, View, TextInput, Button, StyleSheet, Text, TouchableWithoutFeedback } from 'react-native';
+import React from 'react';
+import { Modal, View, StyleSheet, Text, TouchableWithoutFeedback } from 'react-native';
 import { Activity } from '../../constants/types';
 
 type Props = {

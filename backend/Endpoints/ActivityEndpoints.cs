@@ -10,8 +10,14 @@ public static class ActivityEndpoints
     {
         // GET all
         app.MapGet("/activities", async (AppDbContext db) =>
-            await db.Activities.ToListAsync());
+        {
+            var now = DateTime.UtcNow; 
+            var upcomingActivities = await db.Activities
+                .Where(a => a.Date >= now)
+                .ToListAsync();
 
+            return upcomingActivities;
+        });
         // GET by id
         app.MapGet("/activities/{id:int}", async (int id, AppDbContext db) =>
             await db.Activities.FindAsync(id) is Activity activity

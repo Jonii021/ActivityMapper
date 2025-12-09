@@ -1,21 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Modal, View, TextInput, Button, StyleSheet, Text, TouchableWithoutFeedback } from 'react-native';
+import { Modal, View, Button, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import { Activity } from '../../constants/types';
 import { DatePicker, Form, Input, List, Picker, Provider } from '@ant-design/react-native'
 import enUS from '@ant-design/react-native/lib/locale-provider/en_US';
-
-import {
-  faDumbbell,
-  faPersonRunning,
-  faPersonWalking,
-  faBicycle,
-  faPersonBiking,
-  faPersonHiking,
-  faCampground,
-  faMountain,
-  faHeartPulse,
-  faQuestion
-} from "@fortawesome/free-solid-svg-icons";
 
 
 type Props = {

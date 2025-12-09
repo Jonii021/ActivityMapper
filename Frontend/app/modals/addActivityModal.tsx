@@ -4,6 +4,18 @@ import { Activity } from '../../constants/types';
 import { DatePicker, Form, Input, List, Picker, Provider } from '@ant-design/react-native'
 import enUS from '@ant-design/react-native/lib/locale-provider/en_US';
 
+import {
+  faDumbbell,
+  faPersonRunning,
+  faPersonWalking,
+  faBicycle,
+  faPersonBiking,
+  faPersonHiking,
+  faCampground,
+  faMountain,
+  faHeartPulse,
+  faQuestion
+} from "@fortawesome/free-solid-svg-icons";
 
 
 type Props = {
@@ -17,10 +29,17 @@ export default function AddActivityModal({ visible, activity, onSave, onClose }:
   const [form] = Form.useForm();
 
   const pickerData = [
-    { label: 'Work', value: 'work', key: 'work' },
-    { label: 'Personal', value: 'personal', key: 'personal' },
-    { label: 'Fitness', value: 'fitness', key: 'fitness' },
-    { label: 'Other', value: 'other', key: 'other' },
+
+    { label: 'Other', value: 'Other', key: 'other' },
+    { label: 'Football', value: 'Football', key: 'soccer' },
+    { label: 'Baseball', value: 'Baseball', key: 'baseball' },
+    { label: 'Basketball', value: 'Basketball', key: 'basketball' },
+    { label: 'Volleyball', value: 'Volleyball', key: 'volleyball' },
+    { label: 'Fitness', value: 'Fitness', key: 'fitness' },
+    { label: 'Running', value: 'Running', key: 'running' },
+    { label: 'Walking', value: 'Walking', key: 'walking' },
+    { label: 'Biking', value: 'Biking', key: 'biking' },
+    { label: 'Hiking', value: 'Hiking', key: 'hiking' },
   ];
 
   const handleSave = () => {
@@ -33,6 +52,7 @@ export default function AddActivityModal({ visible, activity, onSave, onClose }:
     };
     const updatedActivity: Activity = { ...activity, ...normalizedValues };
     onSave(updatedActivity);
+    form.resetFields();
   };
 
   return (

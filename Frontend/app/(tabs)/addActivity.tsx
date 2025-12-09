@@ -6,15 +6,16 @@ import { getActivities, createActivity } from '../../api';
 import { Activity } from '../../constants/types';
 import AddActivityModal from '../modals/addActivityModal';
 import ShowActivityModal from '../modals/showActivityModal';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
+import { faQuestion, faDumbbell, faPersonRunning, faPersonWalking, faPersonHiking, faBicycle, faSoccerBall, faVolleyball } from '@fortawesome/free-solid-svg-icons';
 
-function ActivityIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
-  color: string;
-}) {
-  return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
-}
+// function ActivityIcon(props: {
+//   name: React.ComponentProps<typeof FontAwesome>['name'];
+//   color: string;
+// }) {
+//   return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
+// }
 
 export default function AddActivity() {
   const [activities, setActivities] = useState<Activity[]>([]);
@@ -24,6 +25,16 @@ export default function AddActivity() {
   const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
+  const iconNameMap = {
+    Fitness: faDumbbell,
+    Football: faSoccerBall,
+    Volleyball: faVolleyball,
+
+    Running: faPersonRunning,
+    Walking: faPersonWalking,
+    Biking: faBicycle,
+    Hiking: faPersonHiking,
+  };
   const loadActivities = async () => {
     try {
       setLoading(true);
@@ -91,9 +102,11 @@ export default function AddActivity() {
               }}
 
             >
-              <ActivityIcon
-                name="trophy"
-                color="orange"
+              <FontAwesomeIcon
+                size={24}
+                icon={iconNameMap[activity.category as keyof typeof iconNameMap] || faQuestion}
+                color="lightblue"
+                style={styles.icon}
               />
             </View>
           </Marker>
@@ -119,6 +132,7 @@ export default function AddActivity() {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   map: { flex: 1 },
+  icon: { padding: 4, margin: 4 }
 })
 
 

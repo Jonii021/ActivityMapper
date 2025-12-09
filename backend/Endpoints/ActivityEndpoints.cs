@@ -27,10 +27,18 @@ public static class ActivityEndpoints
         // POST
         app.MapPost("/activities", async (Activity activity, AppDbContext db) =>
         {
+            // Ensure the user exists
+            var userExists = await db.Users.AnyAsync(u => u.UserId == activity.CreatedByUserId);
+            if (!userExists)
+                return Results.BadRequest($"User {activity.CreatedByUserId} does not exist");
+
+            // Only the FK is needed; do not attach CreatedByUser from client
             db.Activities.Add(activity);
             await db.SaveChangesAsync();
-            return Results.Created($"/activities/{activity.Id}", activity);
+
+            return Results.Created($"/activities/{activity.ActivityId}", activity);
         });
+
 
         // PUT
         app.MapPut("/activities/{id:int}", async (int id, Activity updated, AppDbContext db) =>
@@ -58,6 +66,16 @@ public static class ActivityEndpoints
             db.Activities.Remove(activity);
             await db.SaveChangesAsync();
             return Results.NoContent();
+        });
+
+        //Get activities by user
+        app.MapGet("/users/{userId:int}/activities", async (int userId, AppDbContext db) =>
+        {
+            var activities = await db.Activities
+                .Where(a => a.CreatedByUserId == userId)
+                .ToListAsync();
+
+            return Results.Ok(activities);
         });
     }
 }

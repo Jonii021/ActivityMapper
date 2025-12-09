@@ -2,15 +2,13 @@ backend-
     activity
         time
         place
-        map icons/
         users
             join
         
 frontend-
     styles
         modals
-        map icons
+        map icons fix/test
 
-    modal for activity info / edit
 
 readme.md

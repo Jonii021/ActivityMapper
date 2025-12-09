@@ -53,7 +53,6 @@ function RootLayoutNav() {
   const colorScheme = useColorScheme();
   const router = useRouter();
   const [checkingIdentity, setCheckingIdentity] = useState(true);
-  const [ready, setReady] = useState(false);
 
 
   useEffect(() => {
@@ -63,7 +62,7 @@ function RootLayoutNav() {
       setCheckingIdentity(false);
     };
     init();
-  }, []);
+  }, [router]);
 
 
 

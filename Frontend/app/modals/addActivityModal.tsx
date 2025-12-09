@@ -3,6 +3,8 @@ import { Activity } from '../../constants/types';
 import { DatePicker, Form, Input, List, Picker, Provider } from '@ant-design/react-native'
 import enUS from '@ant-design/react-native/lib/locale-provider/en_US';
 import { useTranslation } from 'react-i18next';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect, useState } from 'react';
 
 type Props = {
   visible: boolean;
@@ -14,6 +16,17 @@ type Props = {
 export default function AddActivityModal({ visible, activity, onSave, onClose }: Props) {
   const [form] = Form.useForm();
   const { t } = useTranslation();
+
+  const [userId, setUserId] = useState<number | undefined>();
+
+
+  useEffect(() => {
+    AsyncStorage.getItem('Local_ID').then(id => {
+      if (id)
+        setUserId(parseInt(id, 10));
+    });
+  }, []);
+
 
   const pickerData = [
 
@@ -31,13 +44,15 @@ export default function AddActivityModal({ visible, activity, onSave, onClose }:
 
   const handleSave = () => {
     const formValues = form.getFieldsValue();
-
+    console.log('Form values before normalization:', formValues);
     // Ensure category is a string, not an array
     const normalizedValues = {
       ...formValues,
+      createdByUserId: userId,
       category: Array.isArray(formValues.category) ? formValues.category[0] : formValues.category,
     };
     const updatedActivity: Activity = { ...activity, ...normalizedValues };
+    console.log('Saving activity:', updatedActivity);
     onSave(updatedActivity);
     form.resetFields();
   };

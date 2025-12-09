@@ -1,11 +1,18 @@
 
 // Activity type
 export interface Activity {
-  id?: number;
+  ActivityId?: number;
   title: string;
   description: string;
   latitude: number;
   longitude: number;
   date: string;
   category: string;
+  createdByUserId: number;
+  createdByUsername?: string;
+}
+
+export interface User {
+  userId?: number;
+  username: string;
 }

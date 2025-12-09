@@ -87,7 +87,7 @@ export default function AddActivity() {
       >
         {activities.map((activity) => (
           <Marker
-            key={activity.id}
+            key={activity.ActivityId}
             onPress={() => {
               setShowModalVisible(true);
               setSelectedActivity(activity);

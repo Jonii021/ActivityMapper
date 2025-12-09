@@ -1,9 +1,8 @@
-import { setName } from '@/components/identity';
+import { getIdentity, setName } from '@/components/identity';
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button } from 'react-native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../constants/types';
 import { useRouter } from 'expo-router';
+import { createUser } from '@/api';
 
 
 export default function SetupScreen() {
@@ -12,7 +11,8 @@ export default function SetupScreen() {
   async function save() {
     if (value.trim().length === 0) return;
     await setName(value.trim());
-
+    await createUser(value.trim());
+    console.log('Name saved:', value.trim());
     router.replace('/(tabs)/addedActivities');
   }
 

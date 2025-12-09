@@ -6,11 +6,11 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
 import 'react-native-reanimated';
 import 'react-native-get-random-values';
-import { v4 as uuidv4 } from 'uuid';
-
+import i18n from './i18n';
 
 import { useColorScheme } from '@/components/useColorScheme';
 import { getIdentity } from '@/components/identity';
+import { I18nextProvider } from 'react-i18next';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -53,6 +53,8 @@ function RootLayoutNav() {
   const colorScheme = useColorScheme();
   const router = useRouter();
   const [checkingIdentity, setCheckingIdentity] = useState(true);
+  const [ready, setReady] = useState(false);
+
 
   useEffect(() => {
     const init = async () => {
@@ -64,13 +66,15 @@ function RootLayoutNav() {
   }, []);
 
 
+
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="setup" options={{ headerShown: false }} />
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-      </Stack>
-    </ThemeProvider>
+    <I18nextProvider i18n={i18n}>
+      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+        </Stack>
+      </ThemeProvider>
+    </I18nextProvider>
   );
 }

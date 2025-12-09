@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal, View, StyleSheet, Text, TouchableWithoutFeedback } from 'react-native';
 import { Activity } from '../../constants/types';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   visible: boolean;
@@ -9,6 +10,7 @@ type Props = {
 };
 
 export default function ShowActivityModal({ visible, activity, onClose }: Props) {
+  const { t } = useTranslation();
 
   return (
     <Modal
@@ -23,10 +25,10 @@ export default function ShowActivityModal({ visible, activity, onClose }: Props)
           <TouchableWithoutFeedback>
 
             <View style={styles.modalContent}>
-              <Text>Category: {activity?.category}</Text>
-              <Text>Title: {activity?.title}</Text>
-              <Text>Description: {activity?.description}</Text>
-              <Text>  Date: {activity?.date ? (
+              <Text>{t('category')}: {activity?.category}</Text>
+              <Text>{t('Title')}: {activity?.title}</Text>
+              <Text>{t('Description')}: {activity?.description}</Text>
+              <Text>{t('selectDate')}: {activity?.date ? (
                 new Date(activity.date).toLocaleString())
                 : ''
               }</Text>

@@ -1,17 +1,31 @@
-import { StyleSheet } from 'react-native';
-
+import { Button, StyleSheet } from 'react-native';
 import EditScreenInfo from '@/components/EditScreenInfo';
 import { Text, View } from '@/components/Themed';
+import { useTranslation } from 'react-i18next';
+
 
 export default function TabTwoScreen() {
+  const { t, i18n } = useTranslation();
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab Two</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+      <Text style={styles.title}>{t('title')}</Text>
+
+      <View>
+        <Button title="English" onPress={() => i18n.changeLanguage('en')} />
+        <Button title="Suomi" onPress={() => i18n.changeLanguage('fi')} />
+      </View>
+
+      <View
+        style={styles.separator}
+        lightColor="#eee"
+        darkColor="rgba(255,255,255,0.1)"
+      />
       <EditScreenInfo path="app/(tabs)/two.tsx" />
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {

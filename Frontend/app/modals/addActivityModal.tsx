@@ -2,7 +2,7 @@ import { Modal, View, Button, StyleSheet, TouchableWithoutFeedback } from 'react
 import { Activity } from '../../constants/types';
 import { DatePicker, Form, Input, List, Picker, Provider } from '@ant-design/react-native'
 import enUS from '@ant-design/react-native/lib/locale-provider/en_US';
-
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   visible: boolean;
@@ -13,6 +13,7 @@ type Props = {
 
 export default function AddActivityModal({ visible, activity, onSave, onClose }: Props) {
   const [form] = Form.useForm();
+  const { t } = useTranslation();
 
   const pickerData = [
 
@@ -69,7 +70,7 @@ export default function AddActivityModal({ visible, activity, onSave, onClose }:
             <Form.Item
               name="title">
               <Input
-                placeholder="Title"
+                placeholder={t('Title')}
                 style={styles.input}
               />
             </Form.Item>
@@ -77,7 +78,7 @@ export default function AddActivityModal({ visible, activity, onSave, onClose }:
             <Form.Item
               name="description">
               <Input
-                placeholder="Description"
+                placeholder={t('Description')}
                 style={styles.input}
               />
             </Form.Item>
@@ -87,7 +88,7 @@ export default function AddActivityModal({ visible, activity, onSave, onClose }:
               <Picker
                 data={pickerData}
               >
-                <List.Item arrow="horizontal">Category</List.Item>
+                <List.Item arrow="horizontal">{t('category')}</List.Item>
               </Picker>
             </Form.Item>
 
@@ -98,14 +99,14 @@ export default function AddActivityModal({ visible, activity, onSave, onClose }:
                 minDate={new Date()}
                 format="DD-MM-YYYY"
               >
-                <List.Item arrow="horizontal">Select Date</List.Item>
+                <List.Item arrow="horizontal">{t('selectDate')}</List.Item>
               </DatePicker>
             </Form.Item>
           </Form>
 
           <View style={{ marginTop: 12 }}>
             <Button
-              title="Save"
+              title={t('save')}
               onPress={() => {
                 form.validateFields().then(values => handleSave()); {
                 }
@@ -115,7 +116,7 @@ export default function AddActivityModal({ visible, activity, onSave, onClose }:
           </View>
 
           <View style={{ marginTop: 8 }}>
-            <Button title="Cancel" onPress={onClose} />
+            <Button title={t('cancel')} onPress={onClose} />
           </View>
         </View>
       </Provider>

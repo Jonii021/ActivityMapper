@@ -1,6 +1,6 @@
 import { StyleSheet, Alert } from 'react-native';
 import MapView, { MapPressEvent, Marker } from 'react-native-maps';
-import { Text, View } from '@/components/Themed';
+import { View } from '@/components/Themed';
 import React, { useEffect, useState } from 'react';
 import { getActivities, createActivity } from '../../api';
 import { Activity } from '../../constants/types';

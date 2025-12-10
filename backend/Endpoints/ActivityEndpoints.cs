@@ -77,5 +77,102 @@ public static class ActivityEndpoints
 
             return Results.Ok(activities);
         });
+
+
+        //Cancel activity //TODO authentication
+        app.MapPost("/activities/{id:int}/cancel/{userId:int}", async (int id, int userId, AppDbContext db) =>
+        {
+            var activity = await db.Activities.FindAsync(id);
+            if (activity == null) return Results.NotFound();
+
+            if (activity.CreatedByUserId != userId)
+                return Results.BadRequest("Only the creator can cancel this activity.");
+
+            activity.IsCanceled = true;
+            activity.UpdatedAt = DateTime.UtcNow;
+
+            await db.SaveChangesAsync();
+            return Results.Ok(activity);
+        });
+
+
+        //Join activity
+        app.MapPost("/activities/{id:int}/join/{userId:int}", async (int id, int userId, AppDbContext db) =>
+        {
+            var activity = await db.Activities
+                .Include(a => a.Participants)
+                .FirstOrDefaultAsync(a => a.ActivityId == id);
+
+            if (activity == null) return Results.NotFound();
+            if (activity.IsCanceled) return Results.BadRequest();
+            if (activity.Participants.Any(p => p.UserId == userId)) return Results.BadRequest();
+            if (activity.Participants.Count >= activity.MaxParticipants) return Results.BadRequest();
+
+            var user = await db.Users.FindAsync(userId);
+            if (user == null) return Results.NotFound();
+
+            activity.Participants.Add(user);
+            activity.UpdatedAt = DateTime.UtcNow;
+
+            await db.SaveChangesAsync();
+            return Results.Ok(activity);
+        });
+
+        //Leave activity
+        app.MapPost("/activities/{id:int}/leave/{userId:int}", async (int id, int userId, AppDbContext db) =>
+        {
+            var activity = await db.Activities
+                .Include(a => a.Participants)
+                .FirstOrDefaultAsync(a => a.ActivityId == id);
+
+            if (activity == null) return Results.NotFound();
+
+            var user = activity.Participants.FirstOrDefault(p => p.UserId == userId);
+            if (user == null) return Results.BadRequest();
+
+            activity.Participants.Remove(user);
+            activity.UpdatedAt = DateTime.UtcNow;
+
+            await db.SaveChangesAsync();
+            return Results.Ok(activity);
+        });
+
+
+        //activities near a location
+        app.MapGet("/activities/near", async (double lat, double lng, double radius, AppDbContext db) =>
+        {
+            var activities = await db.Activities
+                .Where(a => !a.IsCanceled)
+                .ToListAsync();
+
+            double ToRad(double v) => v * Math.PI / 180;
+
+            var result = activities.Where(a =>
+            {
+                var R = 6371.0;
+                var dLat = ToRad(a.Latitude - lat);
+                var dLon = ToRad(a.Longitude - lng);
+
+                var h =
+                    Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
+                    Math.Cos(ToRad(lat)) *
+                    Math.Cos(ToRad(a.Latitude)) *
+                    Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
+
+                var distance = 2 * R * Math.Asin(Math.Sqrt(h));
+                return distance <= radius;
+            });
+
+            return Results.Ok(result);
+        });
+
+        //activities on a specific date
+        app.MapGet("/activities/on", async (DateTime date, AppDbContext db) =>
+        {
+            return await db.Activities
+                .Where(a => a.Date.Date == date.Date && !a.IsCanceled)
+                .Include(a => a.Participants)
+                .ToListAsync();
+        });
     }
 }

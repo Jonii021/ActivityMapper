@@ -1,22 +1,26 @@
-backend-
-    activity
-        users
-            join
-            participation
-            friends, friendsrequest
-            friends joined
-            added activities
-            
-        
+       
 frontend-
     styles
         modals
         map icons fix/test
 
+        LocationName
+        MaxParticipants
+        Update
+        Cancel
+
+        Friends in profile
+            request handling, block?
+
+        frontpage with joined, friends activities and near you
+
 
 readme.md
 
 
+
+backend-
+            
 1. Authentication + User Accounts (not urgent)
 
 Needed:

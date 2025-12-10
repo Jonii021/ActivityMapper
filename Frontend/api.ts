@@ -20,6 +20,16 @@ export const getActivities = async (): Promise<Activity[] | null> => {
   }
 };
 
+export const getAddedActivities = async (userId: number): Promise<Activity[] | null> => {
+  try {
+    const response = await api.get<Activity[]>(`/users/${userId}/activities`);
+    return response.data;
+  } catch (error: any) {
+    console.error(`Failed to fetch added activities for user ${userId}:`, error.message || error);
+    return null;
+  }
+};
+
 export const getActivity = async (id: number): Promise<Activity | null> => {
   try {
     const response = await api.get<Activity>(`/activities/${id}`);
@@ -27,6 +37,16 @@ export const getActivity = async (id: number): Promise<Activity | null> => {
   } catch (error: any) {
     console.error(`Failed to fetch activity ${id}:`, error.message || error);
     return null;
+  }
+};
+
+export const postJoinActivity = async (activityId: number, userId: number): Promise<boolean> => {
+  try {
+    await api.post(`/activities/${activityId}/join`, { userId });
+    return true;
+  } catch (error: any) {
+    console.error(`Failed to join activity ${activityId} for user ${userId}:`, error.message || error);
+    return false;
   }
 };
 

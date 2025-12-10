@@ -1,5 +1,6 @@
 node_modules/
-
+.env
+expo-env.d.ts
 # Build output
 bin/
 obj/

@@ -1,10 +1,11 @@
 import { Alert, Pressable, StyleSheet } from 'react-native';
 import { Text, View } from '@/components/Themed';
 import { Activity } from '@/constants/types';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { getAddedActivities } from '@/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ShowActivityModal from '../modals/showActivityModal';
+import { useFocusEffect } from 'expo-router';
 
 export default function TabTwoScreen() {
   const [addedActivities, setAddedActivities] = useState<Activity[]>([]);
@@ -13,25 +14,27 @@ export default function TabTwoScreen() {
 
   const loadAddedActivities = async () => {
     try {
-      const data = await getAddedActivities(parseInt(await AsyncStorage.getItem('LOCAL_ID') || '0'));
+      const data = await getAddedActivities(parseInt(await AsyncStorage.getItem('Local_ID') || '0'));
       setAddedActivities(data ?? []);
+      console.log('Added activities loaded:', data);
     } catch (err) {
       console.error(err);
       Alert.alert('Error', 'Failed to load activities');
     }
   };
 
-  useEffect(() => {
-    loadAddedActivities();
-  }, []);
-
+  useFocusEffect(
+    useCallback(() => {
+      loadAddedActivities();
+    }, [])
+  );
 
   return (
     <View style={styles.container}>
       <View style={styles.AddedActivitiesContainer}>
         <Text style={styles.title}>Added Activities</Text>
         {addedActivities.map((activity) => (
-          <Pressable key={activity.ActivityId}
+          <Pressable key={activity.activityId}
             onPress={() => {
               setShowModalVisible(true);
               setSelectedActivity(activity);

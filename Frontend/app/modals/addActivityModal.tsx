@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
 
 type Props = {
+  userId?: number;
   visible: boolean;
   activity?: Partial<Activity>;
   onSave: (activity: Partial<Activity>) => void;
@@ -44,7 +45,6 @@ export default function AddActivityModal({ visible, activity, onSave, onClose }:
 
   const handleSave = () => {
     const formValues = form.getFieldsValue();
-    console.log('Form values before normalization:', formValues);
     // Ensure category is a string, not an array
     const normalizedValues = {
       ...formValues,
@@ -52,11 +52,12 @@ export default function AddActivityModal({ visible, activity, onSave, onClose }:
       category: Array.isArray(formValues.category) ? formValues.category[0] : formValues.category,
     };
     const updatedActivity: Activity = { ...activity, ...normalizedValues };
-    console.log('Saving activity:', updatedActivity);
+    //console.log('Saving activity:', updatedActivity);
     onSave(updatedActivity);
     form.resetFields();
   };
 
+  //console.log('Rendering AddActivityModal with activity:', activity);
   return (
     <Modal
       animationType="slide"

@@ -1,14 +1,18 @@
 import axios from 'axios';
 import { Activity } from './constants/types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-// Replace with your backend URL (on Android emulator, use your machine IP)
-const API_URL = 'http://192.168.0.30:5000/';
+import Constants from 'expo-constants';
+
+import { API_URL } from './config';
+
+console.log('API URL:', API_URL);
 
 const api = axios.create({
   baseURL: API_URL,
   timeout: 5000,
 });
 
+console.log('Axios instance created with baseURL:', api.defaults.baseURL);
 
 export const getActivities = async (): Promise<Activity[] | null> => {
   try {
@@ -21,8 +25,10 @@ export const getActivities = async (): Promise<Activity[] | null> => {
 };
 
 export const getAddedActivities = async (userId: number): Promise<Activity[] | null> => {
+  console.log('Fetching added activities for user:', userId);
   try {
     const response = await api.get<Activity[]>(`/users/${userId}/activities`);
+    console.log('Fetched added activities:', response.data);
     return response.data;
   } catch (error: any) {
     console.error(`Failed to fetch added activities for user ${userId}:`, error.message || error);
@@ -42,8 +48,8 @@ export const getActivity = async (id: number): Promise<Activity | null> => {
 
 export const postJoinActivity = async (activityId: number, userId: number): Promise<boolean> => {
   try {
-    await api.post(`/activities/${activityId}/join`, { userId });
-    return true;
+    const response = await api.post(`/activities/${activityId}/join/${userId}`);
+    return response.data;
   } catch (error: any) {
     console.error(`Failed to join activity ${activityId} for user ${userId}:`, error.message || error);
     return false;
@@ -95,7 +101,6 @@ export const createUser = async (username: string): Promise<{ username: string }
     const response = await api.post<{ username: string }>('/users', { username });
 
     const userId = response.data.userId;
-    console.log('Created user with ID:', userId);
     if (userId) {
       await AsyncStorage.setItem('Local_ID', userId.toString());
     }

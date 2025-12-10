@@ -52,6 +52,9 @@ public static class ActivityEndpoints
             activity.Longitude = updated.Longitude;
             activity.Date = updated.Date;
             activity.Category = updated.Category;
+            activity.LocationName = updated.LocationName;
+            activity.MaxParticipants = updated.MaxParticipants;
+            activity.UpdatedAt = DateTime.UtcNow;
 
             await db.SaveChangesAsync();
             return Results.Ok(activity);
@@ -103,21 +106,17 @@ public static class ActivityEndpoints
                 .Include(a => a.Participants)
                 .FirstOrDefaultAsync(a => a.ActivityId == id);
 
-            if (activity == null) return Results.NotFound();
-            if (activity.IsCanceled) return Results.BadRequest();
-            if (activity.Participants.Any(p => p.UserId == userId)) return Results.BadRequest();
-            if (activity.Participants.Count >= activity.MaxParticipants) return Results.BadRequest();
+            if (activity == null || activity.IsCanceled) return Results.BadRequest();
 
-            var user = await db.Users.FindAsync(userId);
-            if (user == null) return Results.NotFound();
+            var dto = new {
+                activity.ActivityId,
+                Participants = activity.Participants.Select(p => new {
+                    p.UserId,
+                })
+            };
 
-            activity.Participants.Add(user);
-            activity.UpdatedAt = DateTime.UtcNow;
-
-            await db.SaveChangesAsync();
-            return Results.Ok(activity);
+            return Results.Ok(dto);
         });
-
         //Leave activity
         app.MapPost("/activities/{id:int}/leave/{userId:int}", async (int id, int userId, AppDbContext db) =>
         {

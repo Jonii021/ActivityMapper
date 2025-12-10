@@ -12,7 +12,6 @@ export default function SetupScreen() {
     if (value.trim().length === 0) return;
     await setName(value.trim());
     await createUser(value.trim());
-    console.log('Name saved:', value.trim());
     router.replace('/(tabs)/addedActivities');
   }
 

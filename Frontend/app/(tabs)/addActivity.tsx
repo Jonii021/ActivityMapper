@@ -9,6 +9,7 @@ import ShowActivityModal from '../modals/showActivityModal';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
 import { faQuestion, faDumbbell, faPersonRunning, faPersonWalking, faPersonHiking, faBicycle, faSoccerBall, faVolleyball } from '@fortawesome/free-solid-svg-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // function ActivityIcon(props: {
 //   name: React.ComponentProps<typeof FontAwesome>['name'];
@@ -24,6 +25,15 @@ export default function AddActivity() {
   const [newActivity, setNewActivity] = useState<Partial<Activity>>({});
   const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [userId, setUserId] = useState<number>(null as unknown as number);
+
+  useEffect(() => {
+    AsyncStorage.getItem('Local_ID').then(id => {
+      console.log('Fetched userId from AsyncStorage:', id);
+      if (id)
+        setUserId(parseInt(id, 10));
+    });
+  }, []);
 
   const iconNameMap = {
     Fitness: faDumbbell,
@@ -40,6 +50,7 @@ export default function AddActivity() {
       setLoading(true);
       const data = await getActivities();
       setActivities(data ?? []);
+      //console.log('Activities loaded:', data);
     } catch (err) {
       console.error(err);
       Alert.alert('Error', 'Failed to load activities');
@@ -87,7 +98,7 @@ export default function AddActivity() {
       >
         {activities.map((activity) => (
           <Marker
-            key={activity.ActivityId}
+            key={activity.activityId}
             onPress={() => {
               setShowModalVisible(true);
               setSelectedActivity(activity);
@@ -96,6 +107,7 @@ export default function AddActivity() {
               longitude: activity.longitude
             }}   >
             <View
+              key={activity.activityId}
               style={{
                 backgroundColor: '#ffffff',
 
@@ -103,6 +115,7 @@ export default function AddActivity() {
 
             >
               <FontAwesomeIcon
+                key={activity.activityId}
                 size={24}
                 icon={iconNameMap[activity.category as keyof typeof iconNameMap] || faQuestion}
                 color="lightblue"
@@ -120,6 +133,7 @@ export default function AddActivity() {
         onClose={() => setShowModalVisible(false)}
       />
       <AddActivityModal
+        userId={userId}
         visible={addModalVisible}
         activity={newActivity}
         onSave={handleSave}

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { act, useEffect } from 'react';
 import { Modal, View, StyleSheet, Text, TouchableWithoutFeedback } from 'react-native';
 import { Activity } from '../../constants/types';
 import { useTranslation } from 'react-i18next';
@@ -18,17 +18,33 @@ export default function ShowActivityModal({ visible, activity, onClose }: Props)
   const [joined, setJoined] = React.useState<boolean>(false);
   const [userId, setUserId] = React.useState<number>(0);
 
+  //console.log('ShowActivityModal rendered with activity:', activity);
   useEffect(() => {
     const fetchUserId = async () => {
-      const id = await AsyncStorage.getItem('LOCAL_ID');
-      setUserId(parseInt(id || '0'));
+      const id = await AsyncStorage.getItem('Local_ID');
+      if (id) {
+        setUserId(parseInt(id, 10));
+      } else {
+        console.warn('LOCAL_ID not found in AsyncStorage');
+        setUserId(null); // or handle as needed
+      }
     };
     fetchUserId();
   }, []);
 
-  async function JoinActivity(ActivityId: number | undefined) {
-    await postJoinActivity(ActivityId as number, userId);
-    setJoined(true);
+  async function JoinActivity(activityId: number) {
+    //console.log(activity);
+    if (!userId) {
+      console.warn('Cannot join activity, userId is invalid');
+      return;
+    }
+
+    try {
+      await postJoinActivity(activityId, userId);
+      setJoined(true);
+    } catch (error) {
+      console.error(`Failed to join activity ${activityId} for user ${userId}:`, error);
+    }
   }
 
   return (
@@ -51,7 +67,7 @@ export default function ShowActivityModal({ visible, activity, onClose }: Props)
                 new Date(activity.date).toLocaleString())
                 : ''
               }</Text>
-              <Button onPress={() => { JoinActivity(activity.ActivityId) }} >
+              <Button onPress={() => { JoinActivity(activity.activityId) }} >
                 {t('joinActivity')}
               </Button>
             </View>

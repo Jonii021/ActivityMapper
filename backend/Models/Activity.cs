@@ -13,4 +13,6 @@ public class Activity
 
     public int CreatedByUserId { get; set; }
     public User CreatedByUser { get; set; }
+
+    public List<User> Participants { get; set; } = new();
 }

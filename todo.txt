@@ -2,6 +2,11 @@ backend-
     activity
         users
             join
+            participation
+            friends, friendsrequest
+            friends joined
+            added activities
+            
         
 frontend-
     styles
@@ -10,3 +15,98 @@ frontend-
 
 
 readme.md
+
+
+1. Authentication + User Accounts (not urgent)
+
+Needed:
+
+    User registration
+
+    User login
+
+    Password hashing
+
+    JWT issuing & validation
+
+    Current user endpoint (/auth/me)
+
+    Database additions:
+
+    Email
+
+    PasswordHash
+
+    PasswordSalt
+
+    CreatedAt
+
+
+2. Activity lifecycle
+
+Fields:
+
+    UpdatedAt?
+
+    IsCanceled?
+
+    MaxParticipants
+
+    LocationName
+
+
+    Endpoints
+
+        Cancel activity
+
+        Join activity
+
+        Leave activity
+
+        Get activities near X,Y
+
+        Get activities by date (not urgent)
+
+3. Participants system
+
+Features to add:
+
+    Prevent joining twice
+
+    Prevent joining full activities
+
+    Prevent creator leaving (or special handling)
+
+    Optionally: Status per participant
+
+    Going
+
+    Maybe
+
+    Invited
+
+
+5. Activity Feed
+
+    Features:
+
+    Recent activities from friends
+
+    Activities created near you
+
+    Activities you joined or were invited to
+
+
+6. Notifications (not urgent)
+
+Types:
+
+    A friend request
+
+    Someone accepted your friend request
+
+    Someone joined your activity
+
+    Someone canceled activity
+
+    Activity starting soon

@@ -7,5 +7,8 @@ public class User
     public string Username { get; set; } = "";
 
     public List<Activity> Activities { get; set; } = new();
+    
+    public List<FriendRequest> SentFriendRequests { get; set; } = new();
+    public List<FriendRequest> ReceivedFriendRequests { get; set; } = new();
 
 }

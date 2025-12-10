@@ -36,6 +36,7 @@ var app = builder.Build();
 app.UseCors();
 app.MapActivities();
 app.User();
+app.Friends();
 
 // Development tools
 if (app.Environment.IsDevelopment())
